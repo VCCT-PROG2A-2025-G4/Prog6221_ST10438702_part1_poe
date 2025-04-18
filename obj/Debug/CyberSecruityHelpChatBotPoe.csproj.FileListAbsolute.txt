@@ -1,0 +1,9 @@
+C:\class work\CyberSecruityHelpChatBotPoe\CyberSecruityHelpChatBotPoe\bin\Debug\CyberSecruityHelpChatBotPoe.exe.config
+C:\class work\CyberSecruityHelpChatBotPoe\CyberSecruityHelpChatBotPoe\bin\Debug\CyberSecruityHelpChatBotPoe.exe
+C:\class work\CyberSecruityHelpChatBotPoe\CyberSecruityHelpChatBotPoe\bin\Debug\CyberSecruityHelpChatBotPoe.pdb
+C:\class work\CyberSecruityHelpChatBotPoe\CyberSecruityHelpChatBotPoe\obj\Debug\CyberSecruityHelpChatBotPoe.csproj.AssemblyReference.cache
+C:\class work\CyberSecruityHelpChatBotPoe\CyberSecruityHelpChatBotPoe\obj\Debug\CyberSecruityHelpChatBotPoe.csproj.CoreCompileInputs.cache
+C:\class work\CyberSecruityHelpChatBotPoe\CyberSecruityHelpChatBotPoe\obj\Debug\CyberSecruityHelpChatBotPoe.exe
+C:\class work\CyberSecruityHelpChatBotPoe\CyberSecruityHelpChatBotPoe\obj\Debug\CyberSecruityHelpChatBotPoe.pdb
+C:\class work\CyberSecruityHelpChatBotPoe\CyberSecruityHelpChatBotPoe\obj\Debug\CyberSecruityHelpChatBotPoe.Properties.Resources.resources
+C:\class work\CyberSecruityHelpChatBotPoe\CyberSecruityHelpChatBotPoe\obj\Debug\CyberSecruityHelpChatBotPoe.csproj.GenerateResource.cache
