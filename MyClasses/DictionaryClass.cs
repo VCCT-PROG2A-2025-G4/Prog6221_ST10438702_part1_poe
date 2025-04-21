@@ -28,16 +28,15 @@ namespace CyberSecruityHelpChatBotPoe.MyClasses
         /// </summary>
         private void addToDictionary()
         {
-            this.ChatBotDictionary.Add("email safety","Dont click on anylinks in any email");
-            this.ChatBotDictionary.Add("phishing", "A type of malware");
-            this.ChatBotDictionary.Add("virus", "A type of malware");
-            this.ChatBotDictionary.Add("worm", "A type of malware");
-            this.ChatBotDictionary.Add("malware", "Any type of malicous code!!!");
-            this.ChatBotDictionary.Add("worms", "A type of malware");
-            this.ChatBotDictionary.Add("tempvalue", "A type of malware");
-            this.ChatBotDictionary.Add("tempvalues", "A type of malware");
-            this.ChatBotDictionary.Add("trojan", "A type of malware");
-            this.ChatBotDictionary.Add("ransomware", "A type of malware");
+            this.ChatBotDictionary.Add("email", "Dont click on anylinks in any email");
+            this.ChatBotDictionary.Add("phishing", "A social engineering attack that tricks users into revealing sensitive information by masquerading as a trustworthy entity");
+            this.ChatBotDictionary.Add("virus", "A malicious program that attaches itself to legitimate software and replicates to infect other files when the host runs");
+            this.ChatBotDictionary.Add("worm", "A standalone piece of malware that self‑replicates across networks without needing a host file or user action");
+            this.ChatBotDictionary.Add("malware", "Software designed to infiltrate, damage, or gain unauthorized access to a computer system without the user’s consent");
+            this.ChatBotDictionary.Add("worms", "Self‑replicating malware similar to worms, intended to spread quickly across systems and networks");
+            this.ChatBotDictionary.Add("tempvalue", "A temporary storage variable used to hold intermediate data during processing");
+            this.ChatBotDictionary.Add("trojan", "Malicious software that disguises itself as legitimate to trick users into installing it");
+            this.ChatBotDictionary.Add("ransomware", "Malware that encrypts files or locks systems and demands payment for restoration");
             this.ChatBotDictionary.Add("how are you", "I am doing great thank you!");
             this.ChatBotDictionary.Add("what is your purpose", "To help you stay secure!!");
             this.ChatBotDictionary.Add("what can i ask you about", "You can ask basic question on cyber secruity and i will answer based on my limited dictionary based results");
@@ -50,26 +49,62 @@ namespace CyberSecruityHelpChatBotPoe.MyClasses
         
         public string SearchUserInput(string keywordIn)
         {
+            
             var lowerValue = keywordIn.ToLower(); //used to convert all user input to lower case to prevent false negatives in searched values being not found in the dictionary
 
-            var spaces = new char[] {' ', ',','.',':',';','!','?'};//used to split user input into words
+            var spaces = new char[] {' ',',','.',':',';','!','?'};//used to split user input into words
 
             var tempvalue = lowerValue.Split(spaces,StringSplitOptions.RemoveEmptyEntries);//splits user input into words and removes any empty entries
 
-            
-            foreach (var word in tempvalue)//loops for each word in the user input
+            for (int i = 1; i + 1 <= tempvalue.Length; i++)
             {
-                foreach (var textValue in this.ChatBotDictionary.Keys) // loops for each key value in the dictionary 
-                    {
-                        if (word.Equals(textValue))//checks to see if word of user input is equal to key value in dictionary
+                String tempSentence = string.Join(" ", tempvalue, 0, i+1);//used to add words from user input that have been separated into one string with spaces one string at a time
+
+                // Console.WriteLine(tempSentence);//for testing
+                for (int current = 0; current + i <= tempvalue.Length; current++)
+                {    
+                   foreach (var textValue in this.ChatBotDictionary.Keys) // loops for each key value in the dictionary 
                         {
-                            return this.ChatBotDictionary[textValue];//returns value associated with the key value when found
+                            if (tempSentence.Equals(textValue))//checks to see if word of user input is equal to key value in dictionary
+                            {
+                                return this.ChatBotDictionary[textValue];//returns value associated with the key value when found
+                            }
+                        }
+                }
+                if (i <= tempvalue.Length)
+                {   
+                    for (int x = 1; x + 1 <= tempvalue.Length; x++)
+                    {
+                        String reverseTempSentence = string.Join(" ", tempvalue, i, tempvalue.Length - i);//removes one string at a time but basically the same
+                        // Console.WriteLine(reverseTempSentence); // for testing
+
+                        for (int current2 = 0; current2 + x <= tempvalue.Length; current2++)
+                        {
+                            foreach (var textValue in this.ChatBotDictionary.Keys) // loops for each key value in the dictionary 
+                            {
+                                if (reverseTempSentence.Equals(textValue))//checks to see if word of user input is equal to key value in dictionary
+                                {
+                                    return this.ChatBotDictionary[textValue];//returns value associated with the key value when found
+                                }
+                            }
+
                         }
                     }
+                }
+            }
+
+            foreach (var word in tempvalue)//loops for each individual word in the user input
+            {
+                foreach (var textValue in this.ChatBotDictionary.Keys) // loops for each key value in the dictionary 
+                {
+                    if (word.Equals(textValue))//checks to see if word of user input is equal to key value in dictionary
+                    {
+                        return this.ChatBotDictionary[textValue];//returns value associated with the key value when found
+                    }
+                }
             }
             return "No value found, Sorry could you please try again with differant wording or a differant question";
+            
         }
-
-
     }
 }
