@@ -23,7 +23,7 @@ jobs:
         run: nuget restore CyberSecruityHelpChatBotPoe.csproj -SolutionDirectory .
         
       - name: Build with MSBuild
-        run: msbuild CyberSecurityHelpChatBotPoe.sln /p:Configuration=Release /p:Platform="Any CPU"
+        run: msbuild CyberSecruityHelpChatBotPoe.sln /p:Configuration=Release /p:Platform="Any CPU"
    
 
 
