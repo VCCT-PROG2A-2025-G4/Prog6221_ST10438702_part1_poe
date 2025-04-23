@@ -22,15 +22,15 @@ jobs:
       - name: Restore NuGet packages
         shell: pwsh
         run: |
-              nuget restore "class work\CyberSecruityHelpChatBotPoe\Prog6221_ST10438702_part1_poe.csproj"
+              nuget restore "CyberSecruityHelpChatBotPoe\Prog6221_ST10438702_part1_poe.csproj"
 
       - name: Build with MSBuild
         shell: pwsh
         run: |
-            msbuild "class work\CyberSecruityHelpChatBotPoe\Prog6221_ST10438702_part1_poe.csproj" `
+            msbuild "CyberSecruityHelpChatBotPoe\Prog6221_ST10438702_part1_poe.csproj" `
             /p:Configuration=Release `
             /p:Platform="Any CPU" `
-            /p:OutputPath="class work\CyberSecruityHelpChatBotPoe\Prog6221_ST10438702_part1_poe\bin\Release"
+            /p:OutputPath="CyberSecruityHelpChatBotPoe\Prog6221_ST10438702_part1_poe\bin\Release"
 
 
 
