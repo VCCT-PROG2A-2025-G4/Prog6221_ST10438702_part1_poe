@@ -3,7 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-
+//referances 
+//chatGPT
+//Rudolph's speech chat bot code on dictionaries is where i based the start of this code of 
 namespace CyberSecruityHelpChatBotPoe.MyClasses
 {
     internal class DictionaryClass
@@ -15,7 +17,7 @@ namespace CyberSecruityHelpChatBotPoe.MyClasses
         private Dictionary<string, string> ChatBotDictionary = new Dictionary<string, string>();
 
         ///
-        /// Constructor
+        /// Constructor for dictionary
         ///
 
         public DictionaryClass()
@@ -26,7 +28,7 @@ namespace CyberSecruityHelpChatBotPoe.MyClasses
         /// <summary>
         /// Method too set preset values to the dictionary
         /// </summary>
-        private void addToDictionary()
+        private void addToDictionary()  //Made with the help of chat gpt to create preset text values for each key word
         {
             this.ChatBotDictionary.Add("email", "Dont click on anylinks in any email");
             this.ChatBotDictionary.Add("phishing", "A social engineering attack that tricks users into revealing sensitive information by masquerading as a trustworthy entity");
@@ -47,12 +49,11 @@ namespace CyberSecruityHelpChatBotPoe.MyClasses
         /// Method used to search by comparing words in user input into the dictionary
         /// </summary>
         
-        public string SearchUserInput(string keywordIn)
+        public string SearchUserInput(string keywordIn) //chat gpt helped with making this method work as i was struggling to get it to work on my own.
         {
-            
             var lowerValue = keywordIn.ToLower(); //used to convert all user input to lower case to prevent false negatives in searched values being not found in the dictionary
 
-            var spaces = new char[] {' ',',','.',':',';','!','?'};//used to split user input into words
+            var spaces = new char[] {' ',',','.',':',';','!','?'};//used to split user input into seperate words
 
             var tempvalue = lowerValue.Split(spaces,StringSplitOptions.RemoveEmptyEntries);//splits user input into words and removes any empty entries
 
@@ -76,7 +77,6 @@ namespace CyberSecruityHelpChatBotPoe.MyClasses
                     for (int x = 1; x + 1 <= tempvalue.Length; x++)
                     {
                         String reverseTempSentence = string.Join(" ", tempvalue, i, tempvalue.Length - i);//removes one string at a time but basically the same
-                        // Console.WriteLine(reverseTempSentence); // for testing
 
                         for (int current2 = 0; current2 + x <= tempvalue.Length; current2++)
                         {
@@ -107,4 +107,5 @@ namespace CyberSecruityHelpChatBotPoe.MyClasses
             
         }
     }
+    //-----------------------------------------------END OF FILE---------------------------------------------------//
 }

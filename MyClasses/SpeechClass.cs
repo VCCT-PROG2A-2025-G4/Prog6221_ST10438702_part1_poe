@@ -4,13 +4,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Speech.Synthesis;
-
+//referances
+//inspired heavily by rudolph's speech chat bot code
 namespace CyberSecruityHelpChatBotPoe.MyClasses
 {
     internal class SpeechClass
     {
-        
-        
             ///
             // Speech object used to output speech
             ///
@@ -43,4 +42,5 @@ namespace CyberSecruityHelpChatBotPoe.MyClasses
             }
         
     }
+    //-----------------------------------------------END OF FILE---------------------------------------------------//
 }

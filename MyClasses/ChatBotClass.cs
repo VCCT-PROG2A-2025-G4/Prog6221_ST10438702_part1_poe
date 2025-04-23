@@ -2,12 +2,16 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Media;
+using System.Net.Mail;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
 using static CyberSecruityHelpChatBotPoe.MyClasses.SpeechClass;
+using Spectre.Console;
 
+//referances
+//inspired by rudolph's speech chat bot code
 namespace CyberSecruityHelpChatBotPoe.MyClasses
 {
     class ChatBotClass
@@ -15,6 +19,9 @@ namespace CyberSecruityHelpChatBotPoe.MyClasses
         bool Flag = true;//flag while loop to determine when user is done asking questions
         bool Flag2 = true;// flag to determine if its the first time question for different message to be shown to user
         bool Flag3 = true;// flag used to loop if invalid or no answer avalible to user so they dont have to get a message prompting to go again and have to say yes to new question
+        bool FlagNameVal = false;//flag to check if user input is valid for username
+        bool FlagInputQuesVal = false;//flag used to loop userinput till valid input is given
+        
         private SpeechClass SpeechClassObject = new SpeechClass();
 
         private DictionaryClass Data = new DictionaryClass();
@@ -24,7 +31,6 @@ namespace CyberSecruityHelpChatBotPoe.MyClasses
         /// </summary>
         public ChatBotClass()
         {
-
             String[] logo = new[]//ASCI LOCK logo to represet the cybersecurity help chat bot ps I suck at art so this is supposed to be a lock
             {
                 "------++++-----------++++---+++-------+++---+++++++---+++++++---+++++++---------------------",
@@ -38,33 +44,71 @@ namespace CyberSecruityHelpChatBotPoe.MyClasses
                 "---+++++++++++------++++--------+++++-------+++++++---+++++++---++----++--------------------",
                 "--------------------------------------------------------------------------------------------"
             };
+            String[] WelcomeMess = new[]//ASCI for welcome message // tried to use chatgpt to make asci didnt work very well so heavily edited but the welcome was orginally generated
+            {
+                "---++------++---+++++++-++------+----+--+++++++-+-----+-+++++++-----------------------------",  
+                "---++------++---+++++++-++------+--+----+-----+-++---++-+++++++-----------------------------",
+                "---++------++---++------++------+-+-----+-----+-+-+-+-+-+-----------------------------------",
+                "---++--++--++---++------++------++------+-----+-+--+--+-+-----------------------------------",
+                "---++-+--+-++---+++++++-++------+-------+-----+-+-----+-+++++++-----------------------------",
+                "---+++----+++---++------++------++------+-----+-+-----+-+-----------------------------------",
+                "---++------++---++------++------+-+-----+-----+-+-----+-+-----------------------------------",
+                "---++------++---+++++++-++------+--+----+-----+-+-----+-+++++++-----------------------------",
+                "---++------++---+++++++-+++++++-+---++--+++++++-+-----+-+++++++-----------------------------",
+                "--------------------------------------------------------------------------------------------"
+            };
 
             SoundPlayer GreetingAudio = new SoundPlayer(Properties.Resources.Recording);// creating an instance of soundplayer 
             GreetingAudio.Play();//plays greeting audio file
-            
-            
-            foreach(var line in logo)
-                {
+
+            Console.ForegroundColor = ConsoleColor.Blue;//to set color for style of text
+            foreach (var line in logo)//ASCI lock logo
+            {
                 Console.WriteLine(line);
                 }
-            
-            Console.Write("What is your name? :");
+            Console.ResetColor();//clears color
 
-            var username = Console.ReadLine();//prompt user for their name
-            Console.WriteLine("Hello :" +username+" !");
-            this.SpeechClassObject.Talk("Hello :" + username + " !");
-            Console.WriteLine("--------------------------------------------------------------------------------------------");
+            while (!FlagNameVal)//loop to ensure user input username is valid 
+            {
+                AnsiConsole.Markup("[green]What is your name? : [/]");
 
+                var username = Console.ReadLine();//stores user input username for both validation and greeting
+
+                if (string.IsNullOrWhiteSpace(username)|| int.TryParse(username, out _))//null and int check validation // used chat to get the int validation syntax
+                {
+                    this.SpeechClassObject.Talk("Please enter a valid Username that is not blank(Null) or a Number");
+                    AnsiConsole.Markup("[red]Please enter a valid name that is not blank(Null) or a Number[/]");
+                    Console.WriteLine();//makes it easier to read by giving a space between output and ------ break
+                    Console.WriteLine("--------------------------------------------------------------------------------------------");
+                }
+                else
+                {
+                    Console.ForegroundColor = ConsoleColor.Blue;
+                    foreach (var line in WelcomeMess)//asci welcome message
+                    {
+                        Console.WriteLine(line);
+                    }
+                    Console.ResetColor();
+                    AnsiConsole.Markup("[green]Hello :" + username + " ![/]");
+                    this.SpeechClassObject.Talk("Hello :" + username + " !");
+                    Console.WriteLine();
+                    Console.WriteLine("--------------------------------------------------------------------------------------------");
+                    FlagNameVal = true; //sets flag to true if user input is valid
+                }
+                
+            }
+ 
             Console.WriteLine("Succesfully created");
             while (Flag)
             {
                 UserInputStart(); //calling method for prompting user for input
                 this.SpeechClassObject.Talk("Would you like to ask another question? Type N for no");
-                Console.WriteLine("Would you like to ask another question? (Y/N)"); //prompt user if they want to ask another question
+                AnsiConsole.Markup("[yellow]Would you like to ask another question? (Y/N)[/]"); //prompt user if they want to ask another question
+                Console.WriteLine();
                 Console.WriteLine("--------------------------------------------------------------------------------------------");
                 if (Console.ReadLine().ToUpper() == "N")
                 {
-                    Console.WriteLine("Bye!");
+                    AnsiConsole.Markup("[green]Bye![/]");
                     this.SpeechClassObject.Talk("BYYEE!");
                     Flag = false; //Sets flag to false if user wants to exit the loop
                 }
@@ -78,36 +122,60 @@ namespace CyberSecruityHelpChatBotPoe.MyClasses
             
                 if (Flag2)
                 {
-                    Console.WriteLine("Hello, this is a chatbot that is designed to answer basic questions on cyber security that you may have.");
+                    AnsiConsole.Markup("[green]Hello, this is a chatbot that is designed to answer basic questions on cyber security that you may have.[/]");
+                    Console.WriteLine();
                     Console.WriteLine("--------------------------------------------------------------------------------------------");
                     this.SpeechClassObject.Talk("Hello, this is a chatbot that is designed to answer basic questions on cyber security that you may have.");
                     Flag2 = false;// Sets flag to false so this message is only gets shown once to user
                 }
                 else
                 {
+                    Flag3 = true; //sets flag to true after looping for validation and searching of user input for any other questions that follow
                     Console.WriteLine("--------------------------------------------------------------------------------------------");
                     this.SpeechClassObject.Talk("Please ask another question");
-                    Console.WriteLine("Please ask another question");            
-                }
-            while (Flag3)//used to check if no valid results are found in the dictionary and loop to ask user for another question or reword the question
+                    AnsiConsole.Markup("[green]Please ask another question[/]");
+                    Console.WriteLine();
+                    Console.WriteLine("--------------------------------------------------------------------------------------------");
+
+            }
+            while (Flag3)//used to check if no results are found in the dictionary and loop to ask user for another question or reword the question
             {
-                Console.Write("Please enter your question:   "); //prompt user for input
-                String SearchValue = Console.ReadLine().ToLower();// reminder to convert all user input into caps or no caps to prevent false negatives in searched values being not found in the dictionary
+                FlagInputQuesVal = false; //sets flag to false so the loop can be used to check if user input is valid even if mutiple questions are asked
 
-                var result = this.Data.SearchUserInput(SearchValue); // passes user input to search method 
-                
-                string failmessage = "No value found, Sorry could you please try again with differant wording or a differant question";// copy of fail message to compare with result string
-
-                Console.WriteLine(result);
-                Console.WriteLine("--------------------------------------------------------------------------------------------");
-                this.SpeechClassObject.Talk(result);
-                if (!result.Equals(failmessage))//used to break from while loop if value is found in the dictionary 
+                while (!FlagInputQuesVal)//loop to ensure user input username is valid 
                 {
-                    break;
+                    AnsiConsole.Markup("[green]Please enter your question:   [/]"); //prompt user for input
+                    Console.WriteLine();
+                    String SearchValue = Console.ReadLine().ToLower(); 
+                    Console.WriteLine("--------------------------------------------------------------------------------------------");
+
+                    if (string.IsNullOrWhiteSpace(SearchValue) || int.TryParse(SearchValue, out _))//null and int check validation // used chat to get the int validation syntax
+                    {
+                        this.SpeechClassObject.Talk("Please enter a valid Question that is not blank(Null) or a Number");
+                        AnsiConsole.Markup("[red]Please enter a valid Question that is not blank(Null) or a Number[/]");
+                        Console.WriteLine();//for readability
+                        Console.WriteLine("--------------------------------------------------------------------------------------------");
+                    }
+                    else
+                    {
+                        var result = this.Data.SearchUserInput(SearchValue);// passes user input to search method
+                        string failmessage = "No value found, Sorry could you please try again with differant wording or a differant question";// copy of fail message to compare with result string
+                        AnsiConsole.Markup("[green]"+result+"[/]");
+                        Console.WriteLine();
+                        Console.WriteLine("--------------------------------------------------------------------------------------------");
+                        this.SpeechClassObject.Talk(result);
+                        if (!result.Equals(failmessage))//used to break from while loop if value is found in the dictionary 
+                        {
+                            Flag3 = false;
+                        }
+                        FlagInputQuesVal = true; //sets flag to true if user input is valid// not sure if this is redundant
+                    }
+
                 }
                 
             }
         }
         
     }
+    //-----------------------------------------------END OF FILE---------------------------------------------------//
 }
