@@ -19,11 +19,8 @@ jobs:
       uses: microsoft/setup-msbuild@v1.3.1
 
     - name: Restore NuGet packages
-      run: nuget restore CyberSecruityHelpChatBotPoe.sln
+      run: nuget restore CyberSecruityHelpChatBotPoe.csproj
     
-    - name: List files
-      run: ls -R .
-      
     - name: Build with MSBuild
       run: msbuild CyberSecruityHelpChatBotPoe.csproj /p:Configuration=Release
 
