@@ -21,9 +21,9 @@ jobs:
 
       - name: Restore NuGet packages
         run: nuget restore CyberSecruityHelpChatBotPoe.csproj -SolutionDirectory .
+        
       - name: Build with MSBuild
-        run: msbuild CyberSecruityHelpChatBotPoe.csproj /p:Configuration=Release /p:Platform="Any CPU" /p:OutputPath=bin\Release
-    
+        run: msbuild CyberSecurityHelpChatBotPoe.sln /p:Configuration=Release /p:Platform="Any CPU"
    
 
 
