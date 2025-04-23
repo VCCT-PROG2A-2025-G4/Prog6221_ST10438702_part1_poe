@@ -20,15 +20,17 @@ jobs:
         uses: NuGet/setup-nuget@v1
 
       - name: Restore NuGet packages
-        run: nuget restore CyberSecruityHelpChatBotPoe.csproj -PackagesDirectory .
+        shell: pwsh
+        run: |
+              nuget restore "C:\class work\CyberSecruityHelpChatBotPoe\Prog6221_ST10438702_part1_poe.csproj"
 
       - name: Build with MSBuild
         shell: pwsh
         run: |
-          msbuild CyberSecruityHelpChatBotPoe.csproj `
+            msbuild "C:\class work\CyberSecruityHelpChatBotPoe\Prog6221_ST10438702_part1_poe.csproj" `
             /p:Configuration=Release `
             /p:Platform="Any CPU" `
-            /p:OutputPath="bin\Release"
+            /p:OutputPath="C:\class work\CyberSecruityHelpChatBotPoe\Prog6221_ST10438702_part1_poe\bin\Release"
 
 
 
