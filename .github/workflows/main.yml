@@ -1,39 +1,30 @@
-name: .NET CI
+name: .NET Framework CI
 
 on:
   push:
-    branches: [ main, master ]
+    branches: [ "main" ]  
   pull_request:
-    branches: [ main, master ]
+    branches: [ "main" ]
 
 jobs:
   build:
-    runs-on: windows-latest
+    runs-on: windows-latest  
 
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v3
+    - name: Checkout repository
+      uses: actions/checkout@v4
 
-      - name: Setup .NET
-        uses: actions/setup-dotnet@v3
-        with:
-          dotnet-version: '8.0.x'
+    - name: Setup MSBuild
+      uses: microsoft/setup-msbuild@v2
 
-      - name: Cache NuGet packages
-        uses: actions/cache@v3
-        with:
-          path: ~/.nuget/packages
-          key: ${{ runner.os }}-nuget-${{ hashFiles('**/*.csproj') }}
-          restore-keys: ${{ runner.os }}-nuget-
+    - name: Restore NuGet packages
+      run: nuget restore  CyberSecruityHelpChatBotPoe/CyberSecruityHelpChatBotPoe.csproj   
 
-      - name: Restore dependencies
-        run: dotnet restore
+    - name: Build Solution
+      run: msbuild CyberSecruityHelpChatBotPoe/CyberSecruityHelpChatBotPoe.csproj /p:configuration=Release
 
-      - name: Build
-        run: dotnet build --configuration Release --no-restore
-
-      - name: Run application
-        run: dotnet run --project CyberSecruityHelpChatBotPoe/CyberSecruityHelpChatBotPoe.csproj --configuration Release
+    - name: Success message
+      run: echo "✅ Build completed successfully!"
 
 
 
