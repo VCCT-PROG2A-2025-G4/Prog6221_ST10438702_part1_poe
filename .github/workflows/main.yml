@@ -1,36 +1,39 @@
-name: ".NET Framework 4.8 Build"
+name: .NET CI
 
 on:
   push:
-    branches: [ "main" ]
+    branches: [ main, master ]
   pull_request:
-    branches: [ "main" ]
+    branches: [ main, master ]
 
 jobs:
   build:
     runs-on: windows-latest
 
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout repository
+        uses: actions/checkout@v3
 
-      - name: Setup MSBuild
-        uses: microsoft/setup-msbuild@v1.3.1
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v3
+        with:
+          dotnet-version: '8.0.x'
 
-      - name: Setup NuGet
-        uses: NuGet/setup-nuget@v1
+      - name: Cache NuGet packages
+        uses: actions/cache@v3
+        with:
+          path: ~/.nuget/packages
+          key: ${{ runner.os }}-nuget-${{ hashFiles('**/*.csproj') }}
+          restore-keys: ${{ runner.os }}-nuget-
 
-      - name: Restore NuGet packages
-        shell: pwsh
-        run: |
-              nuget restore "Prog6221_ST10438702_part1_poe.csproj"
+      - name: Restore dependencies
+        run: dotnet restore
 
-      - name: Build with MSBuild
-        shell: pwsh
-        run: |
-            msbuild "Prog6221_ST10438702_part1_poe.csproj" `
-            /p:Configuration=Release `
-            /p:Platform="Any CPU" `
-            /p:OutputPath="Prog6221_ST10438702_part1_poe\bin\Release"
+      - name: Build
+        run: dotnet build --configuration Release --no-restore
+
+      - name: Run application
+        run: dotnet run --project CyberSecruityHelpChatBotPoe/CyberSecruityHelpChatBotPoe.csproj --configuration Release
 
 
 
