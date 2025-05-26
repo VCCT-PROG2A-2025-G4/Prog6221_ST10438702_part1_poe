@@ -173,6 +173,8 @@ namespace CyberSecruityHelpChatBotPoe.MyClasses
                 UserSearchedValues.Add(searchValue); // Add the current search value to the list
                 var answer = Data.SearchUserInput(searchValue);
 
+                var sentimentResponse = Data.SearchUserSentiment(searchValue); // Get sentiment response
+
                 if (answer == previousAnswer) //  Check if the answer is the same as the previous one
                 { SameAnswerFlag = true; }
 
@@ -199,14 +201,35 @@ namespace CyberSecruityHelpChatBotPoe.MyClasses
                             randomAnswer = UserSearchedValues[_rng.Next(UserSearchedValues.Count)];
                         }
                     }
-                    AnsiConsole.Markup($"[green]{UserName + " here is your answer :" + answer +": Based on your previous questions you might want to know this fact: "+ Data.SearchUserInput(randomAnswer)}[/]");
+
+                    if (!(sentimentResponse == "No sentiment found in the dictionary"))
+                    {
+                        AnsiConsole.Markup($"[green]{UserName +" "+sentimentResponse +" here is your answer :" + answer + ": Based on your previous questions you might want to know this fact: " + Data.SearchUserInput(randomAnswer)}[/]");
+                        this.SpeechClassObject.Talk(UserName + sentimentResponse + " here is your answer :" + answer);
+                    }
+                    else
+                    {
+                        AnsiConsole.Markup($"[green]{UserName + " here is your answer :" + answer + ": Based on your previous questions you might want to know this fact: " + Data.SearchUserInput(randomAnswer)}[/]");
+                        this.SpeechClassObject.Talk(UserName +" here is your answer :" + answer);
+                    }
+                    
 
                 }
                 else if(SecondQuestionFlag==false)
                 {
-                    AnsiConsole.Markup($"[green]{UserName + " here is your answer :" + answer}[/]");
-                    this.SpeechClassObject.Talk(answer);
-                    
+
+                    if (!(sentimentResponse == "No sentiment found in the dictionary"))
+                    {
+                        AnsiConsole.Markup($"[green]{UserName +" "+ sentimentResponse + " here is your answer :" + answer}[/]");
+                        this.SpeechClassObject.Talk(UserName + sentimentResponse +" here is your answer :" + answer);
+                    }
+                    else 
+                    {
+                        AnsiConsole.Markup($"[green]{UserName + " here is your answer :" + answer}[/]");
+                        this.SpeechClassObject.Talk(UserName + " here is your answer :" +answer);
+                    }
+
+                     
                  }
                 
                 previousAnswer = answer; // Store the previous answer for comparison

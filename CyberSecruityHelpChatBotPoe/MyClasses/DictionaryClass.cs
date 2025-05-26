@@ -10,53 +10,38 @@ namespace CyberSecruityHelpChatBotPoe.MyClasses
 {
     internal class DictionaryClass
     {
-        ///
-        /// Dictionary used to store keywords and associated answers for user answers to users input
-        ///
 
-        //private Dictionary<string, string> ChatBotDictionary = new Dictionary<string, string>();
-
-        //Dictionary<string, List<string>>// added testing 
-
+        private Dictionary<string, string> addSentimentResponsesDictionary;
         ///
         /// Constructor for dictionary
         ///
 
-        /* public DictionaryClass()
-         {
-             this.addToDictionary();
-         }
-         */
+
 
         public DictionaryClass()
         {
             // 2) Initialize it (you can also pass StringComparer.OrdinalIgnoreCase if you want case-insensitive keys):
             ChatBotDictionary = new Dictionary<string, List<string>>(StringComparer.OrdinalIgnoreCase);
+            addSentimentResponsesDictionary = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
 
             // then populate
             AddToDictionary();
+            AddSentimentResponses();
         }
 
-        /// <summary>
-        /// Method too set preset values to the dictionary
-        /// </summary>
-        /*
-        private void addToDictionary()  //Made with the help of chat gpt to create preset text values for each key word
+
+        private void AddSentimentResponses()
         {
-            this.ChatBotDictionary.Add("email", "Dont click on anylinks in any email");
-            this.ChatBotDictionary.Add("phishing", "A social engineering attack that tricks users into revealing sensitive information by masquerading as a trustworthy entity");
-            this.ChatBotDictionary.Add("virus", "A malicious program that attaches itself to legitimate software and replicates to infect other files when the host runs");
-            this.ChatBotDictionary.Add("worm", "A standalone piece of malware that self‑replicates across networks without needing a host file or user action");
-            this.ChatBotDictionary.Add("malware", "Software designed to infiltrate, damage, or gain unauthorized access to a computer system without the user’s consent");
-            this.ChatBotDictionary.Add("worms", "Self‑replicating malware similar to worms, intended to spread quickly across systems and networks");
-            this.ChatBotDictionary.Add("tempvalue", "A temporary storage variable used to hold intermediate data during processing");
-            this.ChatBotDictionary.Add("trojan", "Malicious software that disguises itself as legitimate to trick users into installing it");
-            this.ChatBotDictionary.Add("ransomware", "Malware that encrypts files or locks systems and demands payment for restoration");
-            this.ChatBotDictionary.Add("how are you", "I am doing great thank you!");
-            this.ChatBotDictionary.Add("what is your purpose", "To help you stay secure!!");
-            this.ChatBotDictionary.Add("what can i ask you about", "You can ask basic question on cyber secruity and i will answer based on my limited dictionary based results");
+
+
+            addSentimentResponsesDictionary["worried"] = "I understand it’s normal to feel worried—let me help put your mind at ease.";
+            addSentimentResponsesDictionary["concerned"] = "It’s natural to be concerned; I’m here to answer any questions you have.";
+            addSentimentResponsesDictionary["anxious"] = "Feeling anxious can be overwhelming—let’s tackle it one step at a time.";
+            addSentimentResponsesDictionary["frustrated"] = "I hear your frustration—what can I clarify for you?";
+            addSentimentResponsesDictionary["confused"] = "It’s okay to be confused; tell me what’s unclear and I’ll explain.";
+            addSentimentResponsesDictionary["excited"] = "Your excitement is great—what would you like to explore first?";
         }
-        */
+
         private readonly Random _rng = new Random();
         private Dictionary<string, List<string>> ChatBotDictionary;
         private void AddToDictionary()// the use of lists in the dictionary to allow multiple responses for the same keyword, chat gpt helped with edits to create this compared to the previos dictionary
@@ -125,70 +110,37 @@ namespace CyberSecruityHelpChatBotPoe.MyClasses
             };
         }
 
-        /// <summary>
-        /// Method used to search by comparing words in user input into the dictionary
-        /// </summary>
-
-        /* public string SearchUserInput(string keywordIn) //chat gpt helped with making this method work as i was struggling to get it to work on my own.
-         {
-             var lowerValue = keywordIn.ToLower(); //used to convert all user input to lower case to prevent false negatives in searched values being not found in the dictionary
-
-             var spaces = new char[] {' ',',','.',':',';','!','?'};//used to split user input into seperate words
-
-             var tempvalue = lowerValue.Split(spaces,StringSplitOptions.RemoveEmptyEntries);//splits user input into words and removes any empty entries
-
-             for (int i = 1; i + 1 <= tempvalue.Length; i++)
-             {
-                 String tempSentence = string.Join(" ", tempvalue, 0, i+1);//used to add words from user input that have been separated into one string with spaces one string at a time
-
-                 // Console.WriteLine(tempSentence);//for testing
-                 for (int current = 0; current + i <= tempvalue.Length; current++)
-                 {    
-                    foreach (var textValue in this.ChatBotDictionary.Keys) // loops for each key value in the dictionary 
-                         {
-                             if (tempSentence.Equals(textValue))//checks to see if word of user input is equal to key value in dictionary
-                             {
-                                 return this.ChatBotDictionary[textValue];//returns value associated with the key value when found
-                             }
-                         }
-                 }
-                 if (i <= tempvalue.Length)
-                 {   
-                     for (int x = 1; x + 1 <= tempvalue.Length; x++)
-                     {
-                         String reverseTempSentence = string.Join(" ", tempvalue, i, tempvalue.Length - i);//removes one string at a time but basically the same
-
-                         for (int current2 = 0; current2 + x <= tempvalue.Length; current2++)
-                         {
-                             foreach (var textValue in this.ChatBotDictionary.Keys) // loops for each key value in the dictionary 
-                             {
-                                 if (reverseTempSentence.Equals(textValue))//checks to see if word of user input is equal to key value in dictionary
-                                 {
-                                     return this.ChatBotDictionary[textValue];//returns value associated with the key value when found
-                                 }
-                             }
-
-                         }
-                     }
-                 }
-             }
-
-             foreach (var word in tempvalue)//loops for each individual word in the user input
-             {
-                 foreach (var textValue in this.ChatBotDictionary.Keys) // loops for each key value in the dictionary 
-                 {
-                     if (word.Equals(textValue))//checks to see if word of user input is equal to key value in dictionary
-                     {
-                         return this.ChatBotDictionary[textValue];//returns value associated with the key value when found
-                     }
-                 }
-             }
-             return "No value found, Sorry could you please try again with differant wording or a differant question";
-
-         }
-        */
 
 
+
+
+
+
+
+
+        public string SearchUserSentiment(string keywordIn)//chat gpt used to help optimized and recreate the functionality but in a more efficient way
+        {
+            var delimiters = new[] { ' ', ',', '.', ':', ';', '!', '?' };
+            var words = keywordIn.ToLower().Split(delimiters, StringSplitOptions.RemoveEmptyEntries);
+
+            // Join all consecutive word combinations from largest to smallest to prioritize longer phrases
+            for (int length = words.Length; length >= 1; length--)
+            {
+                for (int start = 0; start <= words.Length - length; start++)
+                {
+                    var phrase = string.Join(" ", words.Skip(start).Take(length));
+
+                    if (addSentimentResponsesDictionary.TryGetValue(phrase, out var replies))
+                    {
+                        string reply = replies;//uses a random number to select a response from the list of responses
+                        return reply;
+                    }
+
+                }
+            }
+
+            return "No sentiment found in the dictionary";
+        }
         public string SearchUserInput(string keywordIn)//chat gpt used to help optimized and recreate the functionality but in a more efficient way
         {
             var delimiters = new[] { ' ', ',', '.', ':', ';', '!', '?' };
