@@ -1,36 +1,30 @@
-name: ".NET Framework 4.8 Build"
+name: .NET Framework CI
 
 on:
   push:
-    branches: [ "main" ]
+    branches: [ "main" ]  
   pull_request:
     branches: [ "main" ]
 
 jobs:
   build:
-    runs-on: windows-latest
+    runs-on: windows-latest  
 
     steps:
-      - uses: actions/checkout@v4
+    - name: Checkout repository
+      uses: actions/checkout@v4
 
-      - name: Setup MSBuild
-        uses: microsoft/setup-msbuild@v1.3.1
+    - name: Setup MSBuild
+      uses: microsoft/setup-msbuild@v2
 
-      - name: Setup NuGet
-        uses: NuGet/setup-nuget@v1
+    - name: Restore NuGet packages
+      run: nuget restore  CyberSecruityHelpChatBotPoe/CyberSecruityHelpChatBotPoe.csproj   
 
-      - name: Restore NuGet packages
-        shell: pwsh
-        run: |
-              nuget restore "Prog6221_ST10438702_part1_poe.csproj"
+    - name: Build Solution
+      run: msbuild CyberSecruityHelpChatBotPoe/CyberSecruityHelpChatBotPoe.csproj /p:configuration=Release
 
-      - name: Build with MSBuild
-        shell: pwsh
-        run: |
-            msbuild "Prog6221_ST10438702_part1_poe.csproj" `
-            /p:Configuration=Release `
-            /p:Platform="Any CPU" `
-            /p:OutputPath="Prog6221_ST10438702_part1_poe\bin\Release"
+    - name: Success message
+      run: echo "✅ Build completed successfully!"
 
 
 
