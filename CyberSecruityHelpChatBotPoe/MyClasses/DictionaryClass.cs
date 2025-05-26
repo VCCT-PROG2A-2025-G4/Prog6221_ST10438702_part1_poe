@@ -10,13 +10,10 @@ namespace CyberSecruityHelpChatBotPoe.MyClasses
 {
     internal class DictionaryClass
     {
-
         private Dictionary<string, string> addSentimentResponsesDictionary;
         ///
         /// Constructor for dictionary
         ///
-
-
 
         public DictionaryClass()
         {
@@ -30,10 +27,8 @@ namespace CyberSecruityHelpChatBotPoe.MyClasses
         }
 
 
-        private void AddSentimentResponses()
+        private void AddSentimentResponses() //used chat gpt to help generate responses for the sentiment dictionary
         {
-
-
             addSentimentResponsesDictionary["worried"] = "I understand it’s normal to feel worried—let me help put your mind at ease.";
             addSentimentResponsesDictionary["concerned"] = "It’s natural to be concerned; I’m here to answer any questions you have.";
             addSentimentResponsesDictionary["anxious"] = "Feeling anxious can be overwhelming—let’s tackle it one step at a time.";
@@ -109,14 +104,6 @@ namespace CyberSecruityHelpChatBotPoe.MyClasses
 
             };
         }
-
-
-
-
-
-
-
-
 
         public string SearchUserSentiment(string keywordIn)//chat gpt used to help optimized and recreate the functionality but in a more efficient way
         {
