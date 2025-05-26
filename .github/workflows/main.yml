@@ -11,7 +11,7 @@ jobs:
     runs-on: windows-latest
 
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
 
       - name: Setup MSBuild
         uses: microsoft/setup-msbuild@v1.3.1
@@ -20,15 +20,17 @@ jobs:
         uses: NuGet/setup-nuget@v1
 
       - name: Restore NuGet packages
-        run: nuget restore CyberSecruityHelpChatBotPoe.csproj -PackagesDirectory .
+        shell: pwsh
+        run: |
+              nuget restore "Prog6221_ST10438702_part1_poe.csproj"
 
       - name: Build with MSBuild
         shell: pwsh
         run: |
-          msbuild CyberSecruityHelpChatBotPoe.csproj `
+            msbuild "Prog6221_ST10438702_part1_poe.csproj" `
             /p:Configuration=Release `
             /p:Platform="Any CPU" `
-            /p:OutputPath="bin\Release"
+            /p:OutputPath="Prog6221_ST10438702_part1_poe\bin\Release"
 
 
 
