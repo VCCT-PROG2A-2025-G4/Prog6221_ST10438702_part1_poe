@@ -79,7 +79,7 @@ namespace CyberSecruityHelpChatBotPoe.MyClasses
         {
             "A virus attaches to legit software and replicates when that host runs.",
             "Watch for unexpected file behavior—viruses can hide in executables.",
-            "Keep your antivirus definitions up to date to catch new virus strains."
+            "Keep your anti-virus software up to date."
         },
                 
                 ["how are you"] = new List<string>
@@ -99,8 +99,29 @@ namespace CyberSecruityHelpChatBotPoe.MyClasses
             "You can ask basic question on cyber secruity and i will answer based on my limited dictionary based results",
             "Any basic information that is based on cyber secruity",
             "Ask about questions based on cyber secruity and a response will be given best to my ability"
+        },
+                ["password"] = new List<string>
+         {
+        "Use a unique, strong password of at least 12 characters—mix uppercase, lowercase, numbers & symbols.",
+        "Store and autofill your passwords with a reputable password manager instead of reusing or writing them down.",
+        "Enable multi-factor authentication wherever possible to add an extra layer of protection."
+         },
+
+                ["scam"] = new List<string>
+        {
+        "Never trust unsolicited requests for money or personal info—verify the sender’s identity through a separate channel.",
+        "Hover over links (or long-press on mobile) to inspect the real URL before clicking to avoid phishing sites.",
+        "If an offer sounds too good to be true, walk away and do your own research—scammers prey on FOMO."
+        },
+
+                ["privacy"] = new List<string>
+        {
+        "Review app permissions regularly and revoke any you don’t actually need (location, camera, contacts, etc.).",
+        "Use a VPN on public or untrusted Wi-Fi to keep your browsing and data traffic encrypted.",
+        "Clear cookies and browser cache periodically, or use your browser’s private/incognito mode to limit tracking."
         }
-      
+
+
             };
         }
 

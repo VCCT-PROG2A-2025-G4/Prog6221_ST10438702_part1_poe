@@ -16,13 +16,18 @@ namespace CyberSecruityHelpChatBotPoe.MyClasses
 {
     class ChatBotClass
     {
+        List<String> UserSearchedValues = new List<string>(); // List to store previously searched values
+        private readonly Random _rng = new Random();
         bool Flag = true;//flag while loop to determine when user is done asking questions
-        bool Flag2 = true;// flag to determine if its the first time question for different message to be shown to user
-        bool Flag3 = true;// flag used to loop if invalid or no answer avalible to user so they dont have to get a message prompting to go again and have to say yes to new question
+        bool SecondQuestionFlag = false; // Flag to check if the user is asking a second question
+        string previousAnswer = string.Empty;
+        // bool Flag2 = true;// flag to determine if its the first time question for different message to be shown to user
+        // bool Flag3 = true;// flag used to loop if invalid or no answer avalible to user so they dont have to get a message prompting to go again and have to say yes to new question
         bool FlagNameVal = false;//flag to check if user input is valid for username
-        bool FlagInputQuesVal = false;//flag used to loop userinput till valid input is given
-        bool GoAgainValue = true;
-        bool SameAnswerFlag = true; // flag to check if the same answer is returned
+      //  bool FlagInputQuesVal = false;//flag used to loop userinput till valid input is given
+       // bool GoAgainValue = true;
+       // bool SameAnswerFlag = true; // flag to check if the same answer is returned
+        string UserName = string.Empty; // variable to store username
 
         private SpeechClass SpeechClassObject = new SpeechClass();
 
@@ -85,6 +90,8 @@ namespace CyberSecruityHelpChatBotPoe.MyClasses
                 }
                 else
                 {
+                    UserName = username; //sets username variable to user input for later use 
+
                     Console.ForegroundColor = ConsoleColor.Blue;
                     foreach (var line in WelcomeMess)//asci welcome message
                     {
@@ -124,11 +131,14 @@ namespace CyberSecruityHelpChatBotPoe.MyClasses
 
         public void UserInputStart()
         {
+           
             bool keepGoing = true;
             bool validationFlag = true; // Flag to check if the input is valid
-            bool SameAnswerFlag = false;
+            bool SameAnswerFlag = true;
+            bool RandomAnserFlag = true;
             var searchValue = string.Empty; // Variable to store the user input
-            var previousAnswer = string.Empty; // Variable to store the previous answer
+             
+
             AnsiConsole.Markup("[green]Hello, this is a chatbot…[/]");
             Console.WriteLine("\n" + new string('-', 80));
             
@@ -148,14 +158,22 @@ namespace CyberSecruityHelpChatBotPoe.MyClasses
                 }
                 else
                 {
-                    validationFlag = false; // Input is valid, exit the loop
+                    var answer2 = Data.SearchUserInput(searchValue); // Call the method to search for the user input
+                    if (!(answer2 == "No value found, sorry. Could you please try again with different wording or a different question?"))
+                       {
+                        validationFlag = false; // Input is valid, exit the loop
+                       }
+                    if (validationFlag)
+                       Console.WriteLine("No value found, sorry. Could you please try again with different wording or a different question?");
                 }
             }
             while (keepGoing)
             {
+                
+                UserSearchedValues.Add(searchValue); // Add the current search value to the list
                 var answer = Data.SearchUserInput(searchValue);
 
-                if (answer == previousAnswer)
+                if (answer == previousAnswer) //  Check if the answer is the same as the previous one
                 { SameAnswerFlag = true; }
 
                 while (SameAnswerFlag) 
@@ -166,10 +184,31 @@ namespace CyberSecruityHelpChatBotPoe.MyClasses
                         SameAnswerFlag = false;
                     }
                 }
+                if (SecondQuestionFlag)
+                {
+                    var randomAnswer = UserSearchedValues[_rng.Next(UserSearchedValues.Count)];
+                    while (RandomAnserFlag) 
+                    {
 
-                AnsiConsole.Markup($"[green]{answer}[/]");
-                this.SpeechClassObject.Talk(answer);
+                        if (!(randomAnswer == searchValue))
+                        {
+                           RandomAnserFlag = false; // Break the loop if the random answer is different from the current search value
+                        }
+                        else
+                        {
+                            randomAnswer = UserSearchedValues[_rng.Next(UserSearchedValues.Count)];
+                        }
+                    }
+                    AnsiConsole.Markup($"[green]{UserName + " here is your answer :" + answer +": Based on your previous questions you might want to know this fact: "+ Data.SearchUserInput(randomAnswer)}[/]");
 
+                }
+                else if(SecondQuestionFlag==false)
+                {
+                    AnsiConsole.Markup($"[green]{UserName + " here is your answer :" + answer}[/]");
+                    this.SpeechClassObject.Talk(answer);
+                    
+                 }
+                
                 previousAnswer = answer; // Store the previous answer for comparison
 
                 Console.WriteLine("\n" + new string('-', 80));
@@ -177,8 +216,10 @@ namespace CyberSecruityHelpChatBotPoe.MyClasses
                 Console.Write("Would you like to know more? (Y/N) ");
                 var more = Console.ReadLine()?.Trim().ToLower();
                 if (more == "n")
+                {
+                    SecondQuestionFlag = true;
                     keepGoing = false;
-                
+                }
             }
         }
 
