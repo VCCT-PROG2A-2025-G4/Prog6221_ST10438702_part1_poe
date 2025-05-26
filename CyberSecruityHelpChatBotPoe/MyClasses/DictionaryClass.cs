@@ -101,8 +101,6 @@ namespace CyberSecruityHelpChatBotPoe.MyClasses
             "Ask about questions based on cyber secruity and a response will be given best to my ability"
         }
       
-
-
             };
         }
 
@@ -170,7 +168,7 @@ namespace CyberSecruityHelpChatBotPoe.MyClasses
         */
 
 
-        public string SearchUserInput(string keywordIn)//chat gpt used to help recreate the functionality but in a more efficient way
+        public string SearchUserInput(string keywordIn)//chat gpt used to help optimized and recreate the functionality but in a more efficient way
         {
             var delimiters = new[] { ' ', ',', '.', ':', ';', '!', '?' };
             var words = keywordIn.ToLower().Split(delimiters, StringSplitOptions.RemoveEmptyEntries);
@@ -184,10 +182,10 @@ namespace CyberSecruityHelpChatBotPoe.MyClasses
                
                     if (ChatBotDictionary.TryGetValue(phrase, out var replies))
                       {
-                        // pick one at random
-                        Console.WriteLine($"[LOG] Match found: \"{phrase}\"");
-                        string reply = replies[_rng.Next(replies.Count)];
-                          return reply;
+
+                        //Console.WriteLine($"[LOG] Match found: \"{phrase}\"");// helps find what the answer is for debugging purposes
+                        string reply = replies[_rng.Next(replies.Count)];//uses a random number to select a response from the list of responses
+                        return reply;
                       }
                
                 }

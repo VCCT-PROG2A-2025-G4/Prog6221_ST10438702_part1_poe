@@ -21,7 +21,9 @@ namespace CyberSecruityHelpChatBotPoe.MyClasses
         bool Flag3 = true;// flag used to loop if invalid or no answer avalible to user so they dont have to get a message prompting to go again and have to say yes to new question
         bool FlagNameVal = false;//flag to check if user input is valid for username
         bool FlagInputQuesVal = false;//flag used to loop userinput till valid input is given
-        
+        bool GoAgainValue = true;
+        bool SameAnswerFlag = true; // flag to check if the same answer is returned
+
         private SpeechClass SpeechClassObject = new SpeechClass();
 
         private DictionaryClass Data = new DictionaryClass();
@@ -117,6 +119,70 @@ namespace CyberSecruityHelpChatBotPoe.MyClasses
         /// <summary>
         /// Method use to prompt user for input and pass it through appropriate methods
         ///<summary>
+        ///
+
+
+        public void UserInputStart()
+        {
+            bool keepGoing = true;
+            bool validationFlag = true; // Flag to check if the input is valid
+            bool SameAnswerFlag = false;
+            var searchValue = string.Empty; // Variable to store the user input
+            var previousAnswer = string.Empty; // Variable to store the previous answer
+            AnsiConsole.Markup("[green]Hello, this is a chatbot…[/]");
+            Console.WriteLine("\n" + new string('-', 80));
+            
+            while (validationFlag)
+            {
+                AnsiConsole.Markup("[green]Please enter your question:[/]");
+                this.SpeechClassObject.Talk("Please enter your question: ");
+
+                searchValue = Console.ReadLine()?.Trim();
+
+                if (string.IsNullOrWhiteSpace(searchValue) || int.TryParse(searchValue, out _))
+                {
+                    AnsiConsole.Markup("[red]Invalid, please enter a non null or non integer value please[/]");
+                    this.SpeechClassObject.Talk("Invalid, please enter a non null or non integer value please");
+                    Console.WriteLine("\n" + new string('-', 80));
+                
+                }
+                else
+                {
+                    validationFlag = false; // Input is valid, exit the loop
+                }
+            }
+            while (keepGoing)
+            {
+                var answer = Data.SearchUserInput(searchValue);
+
+                if (answer == previousAnswer)
+                { SameAnswerFlag = true; }
+
+                while (SameAnswerFlag) 
+                {
+                    answer = Data.SearchUserInput(searchValue);
+                    if (!(answer == previousAnswer)) 
+                    { 
+                        SameAnswerFlag = false;
+                    }
+                }
+
+                AnsiConsole.Markup($"[green]{answer}[/]");
+                this.SpeechClassObject.Talk(answer);
+
+                previousAnswer = answer; // Store the previous answer for comparison
+
+                Console.WriteLine("\n" + new string('-', 80));
+
+                Console.Write("Would you like to know more? (Y/N) ");
+                var more = Console.ReadLine()?.Trim().ToLower();
+                if (more == "n")
+                    keepGoing = false;
+                
+            }
+        }
+
+        /*
         public void UserInputStart()
         {
             
@@ -158,24 +224,56 @@ namespace CyberSecruityHelpChatBotPoe.MyClasses
                     }
                     else
                     {
-                        var result = this.Data.SearchUserInput(SearchValue);// passes user input to search method
+                        
                         string failmessage = "No value found, Sorry could you please try again with differant wording or a differant question";// copy of fail message to compare with result string
-                        AnsiConsole.Markup("[green]"+result+"[/]");
-                     
+                        var previousResult = "Nothing FOR NOW";
+
+                        while (GoAgainValue)
+                        {
+                            var result = "Nothing for now";
+                            SameAnswerFlag = true; //rests flag
+
+                            while (SameAnswerFlag) 
+                           {
+                                result = this.Data.SearchUserInput(SearchValue);// passes user input to search method
+                                if (!(result == previousResult)||(result==failmessage))
+                                { 
+                                    SameAnswerFlag = false; 
+
+                                }
+                           }
+
+                        previousResult = result;
+                        AnsiConsole.Markup("[green]" + result + "[/]");
+
                         Console.WriteLine();
                         Console.WriteLine("--------------------------------------------------------------------------------------------");
                         this.SpeechClassObject.Talk(result);
+
+                        Console.WriteLine("Would you like to know more about this topic ? Type N for no");
+                        this.SpeechClassObject.Talk("Would you like to know more about this topic? Type N for no");
+                        
+
                         if (!result.Equals(failmessage))//used to break from while loop if value is found in the dictionary 
                         {
                             Flag3 = false;
                         }
-                        FlagInputQuesVal = true; //sets flag to true if user input is valid// not sure if this is redundant
+                            var GoAgainSearchValue = Console.ReadLine();
+                            if (String.Equals(GoAgainSearchValue, "n",StringComparison.OrdinalIgnoreCase))
+                            {
+                                Flag3 = false;
+                                FlagInputQuesVal = true;
+                                GoAgainValue = false;
+                            }
+                            FlagInputQuesVal = true; //sets flag to true if user input is valid// not sure if this is redundant
+                        }
                     }
 
                 }
-                
+               
             }
-        }
+       
+        }*/
         
     }
     //-----------------------------------------------END OF FILE---------------------------------------------------//
